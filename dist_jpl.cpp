@@ -217,21 +217,20 @@ int main(int argc, char* argv[]) {
     // 位置・速度(Positions(Radian), Velocities(Radian/Day)) 計算
     o_jpl.calc_pv(astr_t, astr_c);
 
-    // 単位文字列
-    unit = ns::kAu;
-    if (ns::kFlgKm) { unit = ns::kKm; }
-
     // 距離計算
     d = ns::calc_dist(o_jpl.pos);
 
     // 結果出力
+    // （単位 AU で計算しているので、 km は 1AU を乗じる）
     std::cout << "DISTANCE [ "
               << ns::kAstrs[astr_t - 1] << " <=> "
               << ns::kAstrs[astr_c - 1] << " ] (JD: "
               << std::fixed << std::setprecision(8)
               << jd << ")" << std::endl;
     std::cout << "= "
-              << d << " " << unit << std::endl;
+              << d << " " << ns::kAu << std::endl;
+    std::cout << "= "
+              << d * o_jpl.au << " " << ns::kKm << std::endl;
   } catch (...) {
     std::cerr << "EXCEPTION!" << std::endl;
     return EXIT_FAILURE;
